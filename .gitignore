@@ -1,0 +1,33 @@
+# Node.js dependencies & builds
+node_modules/
+.next/
+out/
+build/
+dist/
+
+# Python virtual environment & cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+venv/
+env/
+
+# Secret Environment Files & Credentials
+.env
+.env.local
+.env.development.local
+.env.production.local
+*.pem
+
+# Databases & logs
+*.db
+*.sqlite3
+*.log
+backend/exportreach.db
+backend/exportreach_ai.db
+
+# OS System Files
+.DS_Store
+Thumbs.db

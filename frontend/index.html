@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExportReach AI - Export Marketing Automation System</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+    <!-- Header Navbar -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="logo-group" onclick="switchTab('overview')">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-globe"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>ExportReach <span>AI</span></h1>
+                    <p>International Buyer Discovery & Gmail Outreach Platform</p>
+                </div>
+            </div>
+
+            <div class="header-status">
+                <div class="status-badge" id="gmail-badge">
+                    <span class="pulse-dot green"></span>
+                    <i class="fa-brands fa-google"></i>
+                    <span id="gmail-status-text">Gmail: Connected (Sandbox)</span>
+                </div>
+                <div class="status-badge" id="gemini-badge">
+                    <span class="pulse-dot purple"></span>
+                    <i class="fa-solid fa-brain"></i>
+                    <span>Gemini AI Engine: Active</span>
+                </div>
+                <button class="btn btn-secondary btn-sm" onclick="openSettingsModal()">
+                    <i class="fa-solid fa-gear"></i> Settings
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main App Container -->
+    <div class="main-layout">
+
+        <!-- Navigation Bar -->
+        <nav class="nav-tabs">
+            <button class="tab-btn active" data-tab="overview">
+                <i class="fa-solid fa-house"></i> Home
+            </button>
+            <button class="tab-btn" data-tab="discovery">
+                <i class="fa-solid fa-magnifying-glass-location"></i> Buyer Discovery
+            </button>
+            <button class="tab-btn" data-tab="qualification">
+                <i class="fa-solid fa-filter-circle-dollar"></i> Data Cleaning & AI
+            </button>
+            <button class="tab-btn" data-tab="campaign">
+                <i class="fa-solid fa-pen-to-square"></i> Campaign Creator
+            </button>
+            <button class="tab-btn" data-tab="outreach">
+                <i class="fa-solid fa-paper-plane"></i> Gmail Dispatcher
+            </button>
+            <button class="tab-btn" data-tab="reports">
+                <i class="fa-solid fa-file-invoice-dollar"></i> Reports & Logs
+            </button>
+        </nav>
+
+        <!-- TAB CONTENT 1: HOME PAGE / OVERVIEW HERO COMMAND CENTER -->
+        <section class="tab-content active" id="tab-overview">
+            
+            <!-- Hero Banner Section -->
+            <div class="hero-card glass-card mb-4">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <span class="pulse-dot cyan"></span> NEXT-GEN EXPORT AUTOMATION
+                    </div>
+                    <h1 class="hero-title">Expand Your Export Reach Worldwide with <span class="gradient-text">Gemini AI</span></h1>
+                    <p class="hero-subtitle">
+                        Discover verified international importers, distributors, and wholesalers. Clean & validate contact emails, qualify leads with AI scoring, and automate personalized Gmail outreach with your company presentation PDF attached.
+                    </p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary btn-lg" onclick="switchTab('discovery')">
+                            <i class="fa-solid fa-rocket"></i> Launch Buyer Discovery
+                        </button>
+                        <button class="btn btn-outline btn-lg" onclick="scrollToQuickSearch()">
+                            <i class="fa-solid fa-bolt"></i> Quick Buyer Search
+                        </button>
+                    </div>
+
+                    <div class="hero-highlights">
+                        <div class="highlight-item">
+                            <i class="fa-solid fa-shield-check text-green"></i> 100% RFC Email Validated
+                        </div>
+                        <div class="highlight-item">
+                            <i class="fa-solid fa-brain text-purple"></i> AI Lead Priority Scoring
+                        </div>
+                        <div class="highlight-item">
+                            <i class="fa-solid fa-lock text-cyan"></i> Zero Duplicate Outreach
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KPI Command Metrics Grid -->
+            <div class="metrics-grid mb-4">
+                <div class="metric-card">
+                    <div class="metric-icon cyan"><i class="fa-solid fa-users"></i></div>
+                    <div class="metric-info">
+                        <span class="metric-title">Total Buyers Discovered</span>
+                        <h2 class="metric-value" id="kpi-total-buyers">0</h2>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon green"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="metric-info">
+                        <span class="metric-title">Valid Clean Emails</span>
+                        <h2 class="metric-value" id="kpi-valid-emails">0</h2>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon purple"><i class="fa-solid fa-star"></i></div>
+                    <div class="metric-info">
+                        <span class="metric-title">High Priority Qualified</span>
+                        <h2 class="metric-value" id="kpi-high-priority">0</h2>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon gold"><i class="fa-solid fa-envelope-circle-check"></i></div>
+                    <div class="metric-info">
+                        <span class="metric-title">Outreach Emails Sent</span>
+                        <h2 class="metric-value" id="kpi-sent-emails">0</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Grid: Quick Search & Pipeline Workflow -->
+            <div class="grid-2col mb-4">
+                
+                <!-- Quick Buyer Search Box -->
+                <div class="card glass-card" id="quick-search-box">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-bolt cyan-text"></i> Instant Buyer Search</h3>
+                        <span class="badge badge-cyan">Multi-Source Engine</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Target Export Product</label>
+                        <input type="text" id="quick-product-input" value="Singing Bowls" placeholder="e.g. Singing Bowls, Spices, Textiles, Handicrafts">
+                    </div>
+                    <div class="form-group">
+                        <label>Target Export Countries</label>
+                        <div class="country-tags">
+                            <span class="tag active" data-country="USA">🇺🇸 USA</span>
+                            <span class="tag active" data-country="UK">🇬🇧 UK</span>
+                            <span class="tag active" data-country="Germany">🇩🇪 Germany</span>
+                            <span class="tag active" data-country="UAE">🇦🇪 UAE</span>
+                            <span class="tag" data-country="Canada">🇨🇦 Canada</span>
+                            <span class="tag" data-country="France">🇫🇷 France</span>
+                            <span class="tag" data-country="Japan">🇯🇵 Japan</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Buyer Intent Categories</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" id="qb-importer" checked> Importers</label>
+                            <label><input type="checkbox" id="qb-distributor" checked> Distributors</label>
+                            <label><input type="checkbox" id="qb-wholesaler" checked> Wholesalers</label>
+                            <label><input type="checkbox" id="qb-retailer" checked> Retailers</label>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-full btn-lg" onclick="executeQuickSearch()">
+                        <i class="fa-solid fa-magnifying-glass"></i> Find Buyers Now
+                    </button>
+                </div>
+
+                <!-- Pipeline Architecture Card -->
+                <div class="card glass-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-network-wired purple-text"></i> Automation Pipeline</h3>
+                        <span class="badge badge-purple">4-Stage Workflow</span>
+                    </div>
+                    <div class="pipeline-steps">
+                        <div class="p-step">
+                            <div class="step-num">1</div>
+                            <div class="step-desc">
+                                <strong>Multi-Source Search</strong>
+                                <p>Search Google, B2B portals & web directories for target buyer intent.</p>
+                            </div>
+                        </div>
+                        <div class="p-step">
+                            <div class="step-num">2</div>
+                            <div class="step-desc">
+                                <strong>Validate & Clean Data</strong>
+                                <p>RFC email format validation, deduplication, and manual review isolation.</p>
+                            </div>
+                        </div>
+                        <div class="p-step">
+                            <div class="step-num">3</div>
+                            <div class="step-desc">
+                                <strong>AI Lead Qualification</strong>
+                                <p>Gemini LLM scores leads (0-100), categorizes buyer type, and builds pitches.</p>
+                            </div>
+                        </div>
+                        <div class="p-step">
+                            <div class="step-num">4</div>
+                            <div class="step-desc">
+                                <strong>Gmail Outreach & Track</strong>
+                                <p>Send personalized emails with attached PDF presentation & zero duplicate spam.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Target Export Market Insights Showcase -->
+            <div class="card glass-card mb-4">
+                <div class="card-header space-between">
+                    <h3><i class="fa-solid fa-earth-americas gold-text"></i> Popular Target Markets Overview</h3>
+                    <span class="text-muted">High-demand global import hubs</span>
+                </div>
+                <div class="grid-4col">
+                    <div class="market-card" onclick="quickSearchCountry('USA')">
+                        <div class="market-flag">🇺🇸</div>
+                        <div class="market-title">United States</div>
+                        <p class="market-desc">High demand for handcrafted wellness, home decor & textiles.</p>
+                        <span class="badge badge-cyan">Importers & Distributors</span>
+                    </div>
+                    <div class="market-card" onclick="quickSearchCountry('UK')">
+                        <div class="market-flag">🇬🇧</div>
+                        <div class="market-title">United Kingdom</div>
+                        <p class="market-desc">Strong retail and boutique distribution networks across UK.</p>
+                        <span class="badge badge-purple">Retail Chains</span>
+                    </div>
+                    <div class="market-card" onclick="quickSearchCountry('Germany')">
+                        <div class="market-flag">🇩🇪</div>
+                        <div class="market-title">Germany</div>
+                        <p class="market-desc">Leading European trade hub for quality-certified products.</p>
+                        <span class="badge badge-green">Wholesale Imp.</span>
+                    </div>
+                    <div class="market-card" onclick="quickSearchCountry('UAE')">
+                        <div class="market-flag">🇦🇪</div>
+                        <div class="market-title">UAE & Middle East</div>
+                        <p class="market-desc">Major re-export gateway to Middle East, Africa & Asia.</p>
+                        <span class="badge badge-gold">Re-exporters</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Leads Table Card -->
+            <div class="card glass-card">
+                <div class="card-header space-between">
+                    <h3><i class="fa-solid fa-list-check"></i> Recent Buyer Leads Database</h3>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary btn-sm" onclick="fetchDatabaseBuyers()">
+                            <i class="fa-solid fa-rotate-right"></i> Refresh
+                        </button>
+                        <button class="btn btn-outline btn-sm" onclick="exportBuyersCSV()">
+                            <i class="fa-solid fa-download"></i> Download CSV Report
+                        </button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table" id="recent-leads-table">
+                        <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th>Contact</th>
+                                <th>Country</th>
+                                <th>Buyer Type</th>
+                                <th>Score</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-leads-tbody">
+                            <tr><td colspan="7" class="text-center text-muted">No buyer leads found. Use Buyer Discovery to find international buyers.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB CONTENT 2: BUYER DISCOVERY ENGINE -->
+        <section class="tab-content" id="tab-discovery">
+            <div class="card glass-card mb-4">
+                <div class="card-header">
+                    <h3><i class="fa-solid fa-compass cyan-text"></i> International Buyer Search Engine</h3>
+                    <span class="text-muted">Target international importers, distributors, wholesalers & retailers</span>
+                </div>
+                <div class="grid-3col">
+                    <div class="form-group">
+                        <label>Target Export Product *</label>
+                        <input type="text" id="disc-product" value="Singing Bowls" placeholder="e.g. Singing Bowls">
+                    </div>
+                    <div class="form-group">
+                        <label>Target Countries (Comma separated)</label>
+                        <input type="text" id="disc-countries" value="USA, UK, Germany, UAE, Canada" placeholder="e.g. USA, UK, Germany, UAE">
+                    </div>
+                    <div class="form-group">
+                        <label>Max Results</label>
+                        <select id="disc-max-results">
+                            <option value="15">15 Buyers</option>
+                            <option value="25" selected>25 Buyers</option>
+                            <option value="50">50 Buyers</option>
+                            <option value="100">100 Buyers</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Target Buyer Intent Types</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" class="disc-type" value="Importer" checked> Importers</label>
+                        <label><input type="checkbox" class="disc-type" value="Distributor" checked> Distributors</label>
+                        <label><input type="checkbox" class="disc-type" value="Wholesaler" checked> Wholesalers</label>
+                        <label><input type="checkbox" class="disc-type" value="Retailer" checked> Retailers</label>
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="btn-run-discovery" onclick="runDiscoverySearch()">
+                    <i class="fa-solid fa-magnifying-glass"></i> Search Buyers & Extract Contacts
+                </button>
+            </div>
+
+            <!-- Discovery Results Table -->
+            <div class="card glass-card">
+                <div class="card-header space-between">
+                    <h3><i class="fa-solid fa-table-list"></i> Search Results (<span id="disc-count">0</span>)</h3>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary btn-sm" onclick="runValidationOnDiscovered()">
+                            <i class="fa-solid fa-filter"></i> Validate & Clean
+                        </button>
+                        <button class="btn btn-primary btn-sm" onclick="runAIClassificationOnDiscovered()">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Classify with AI
+                        </button>
+                        <button class="btn btn-success btn-sm" onclick="saveSelectedBuyers()">
+                            <i class="fa-solid fa-floppy-disk"></i> Save Clean Leads
+                        </button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="select-all-disc" onclick="toggleSelectAllDisc(this)"></th>
+                                <th>Company</th>
+                                <th>Contact</th>
+                                <th>Email</th>
+                                <th>Country</th>
+                                <th>Type</th>
+                                <th>Source</th>
+                                <th>Validation</th>
+                            </tr>
+                        </thead>
+                        <tbody id="disc-results-tbody">
+                            <tr><td colspan="8" class="text-center text-muted">Run a search to discover potential buyers.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB CONTENT 3: DATA CLEANING & AI QUALIFICATION -->
+        <section class="tab-content" id="tab-qualification">
+            <div class="card glass-card mb-4">
+                <div class="card-header space-between">
+                    <h3><i class="fa-solid fa-filter-circle-dollar green-text"></i> Buyer Qualification & Lead Cleaning</h3>
+                    <div class="filter-pills">
+                        <button class="pill active" onclick="filterQualificationTable('all')">All</button>
+                        <button class="pill" onclick="filterQualificationTable('valid')">Valid Only</button>
+                        <button class="pill" onclick="filterQualificationTable('High')">High Priority ⭐</button>
+                        <button class="pill" onclick="filterQualificationTable('invalid')">Invalid Email</button>
+                        <button class="pill" onclick="filterQualificationTable('duplicate')">Duplicates</button>
+                        <button class="pill" onclick="filterQualificationTable('manual_review')">Manual Review</button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th>Contact Email</th>
+                                <th>Country</th>
+                                <th>Type</th>
+                                <th>Score</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                                <th>AI Insights</th>
+                            </tr>
+                        </thead>
+                        <tbody id="qual-table-tbody">
+                            <tr><td colspan="8" class="text-center text-muted">No buyers loaded.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB CONTENT 4: CAMPAIGN CREATOR -->
+        <section class="tab-content" id="tab-campaign">
+            <div class="grid-2col">
+                <!-- Campaign Configuration Form -->
+                <div class="card glass-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-sliders cyan-text"></i> Campaign Configuration</h3>
+                    </div>
+                    <div class="form-group">
+                        <label>Campaign Title</label>
+                        <input type="text" id="camp-title" value="Singing Bowl Export Campaign 2026">
+                    </div>
+                    <div class="form-group">
+                        <label>Target Product Name</label>
+                        <input type="text" id="camp-product" value="Singing Bowls" oninput="updateEmailPreview()">
+                    </div>
+                    <div class="grid-2col gap-2">
+                        <div class="form-group">
+                            <label>Category</label>
+                            <input type="text" id="camp-category" value="Handicrafts & Wellness" oninput="updateEmailPreview()">
+                        </div>
+                        <div class="form-group">
+                            <label>Minimum Order Quantity (MOQ)</label>
+                            <input type="text" id="camp-moq" value="50 Units" oninput="updateEmailPreview()">
+                        </div>
+                    </div>
+                    <div class="grid-2col gap-2">
+                        <div class="form-group">
+                            <label>Customization / OEM</label>
+                            <input type="text" id="camp-customization" value="OEM / Custom Logo & Packaging Available" oninput="updateEmailPreview()">
+                        </div>
+                        <div class="form-group">
+                            <label>Shipping</label>
+                            <input type="text" id="camp-shipping" value="Air Cargo / Sea Freight Available" oninput="updateEmailPreview()">
+                        </div>
+                    </div>
+
+                    <h4 class="mt-3 mb-2 text-cyan"><i class="fa-solid fa-user"></i> Sender Details</h4>
+                    <div class="grid-2col gap-2">
+                        <div class="form-group">
+                            <label>Sender Name</label>
+                            <input type="text" id="camp-sender-name" value="Export Sales Manager" oninput="updateEmailPreview()">
+                        </div>
+                        <div class="form-group">
+                            <label>Company Name</label>
+                            <input type="text" id="camp-sender-company" value="Global Products Exports Ltd" oninput="updateEmailPreview()">
+                        </div>
+                    </div>
+                    <div class="grid-2col gap-2">
+                        <div class="form-group">
+                            <label>Sender Email</label>
+                            <input type="text" id="camp-sender-email" value="sales@globalexport.com" oninput="updateEmailPreview()">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="text" id="camp-sender-phone" value="+1 (800) 555-0199" oninput="updateEmailPreview()">
+                        </div>
+                    </div>
+
+                    <h4 class="mt-3 mb-2 text-purple"><i class="fa-solid fa-file-pdf"></i> Company Presentation PDF</h4>
+                    <div class="pdf-upload-box" id="pdf-dropzone" onclick="document.getElementById('pdf-file-input').click()">
+                        <i class="fa-solid fa-cloud-arrow-up pdf-icon"></i>
+                        <div class="pdf-upload-info">
+                            <strong id="pdf-filename-display">Company_Presentation_Catalogue.pdf</strong>
+                            <p>Click to upload or drag & drop presentation PDF</p>
+                        </div>
+                        <input type="file" id="pdf-file-input" accept=".pdf" style="display: none;" onchange="handlePresentationUpload(this)">
+                    </div>
+
+                    <div class="grid-2col gap-2 mt-3">
+                        <div class="form-group">
+                            <label>Sending Limit per Batch</label>
+                            <input type="number" id="camp-limit" value="25" min="1" max="500">
+                        </div>
+                        <div class="form-group">
+                            <label>Delay Between Emails (Seconds)</label>
+                            <input type="number" id="camp-delay" value="5" min="1" max="120">
+                        </div>
+                    </div>
+
+                    <button class="btn btn-success btn-full mt-3" onclick="saveCampaignConfig()">
+                        <i class="fa-solid fa-floppy-disk"></i> Save Campaign Settings
+                    </button>
+                </div>
+
+                <!-- Live Email Template Editor & Compiled Preview -->
+                <div class="card glass-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-envelope-open-text purple-text"></i> Email Composition</h3>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Subject Line</label>
+                        <input type="text" id="camp-subject" value="Export Partnership Opportunity – {{product_name}}" oninput="updateEmailPreview()">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Dynamic Variable Chips (Click to insert)</label>
+                        <div class="tag-chips">
+                            <span class="chip" onclick="insertTag('{{buyer_name}}')">{{buyer_name}}</span>
+                            <span class="chip" onclick="insertTag('{{company_name}}')">{{company_name}}</span>
+                            <span class="chip" onclick="insertTag('{{country}}')">{{country}}</span>
+                            <span class="chip" onclick="insertTag('{{product_name}}')">{{product_name}}</span>
+                            <span class="chip" onclick="insertTag('{{pitch_snippet}}')">{{pitch_snippet}}</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email Body Template</label>
+                        <textarea id="camp-body-template" rows="12" oninput="updateEmailPreview()">Dear {{buyer_name}},
+
+I hope this email finds you well.
+
+We came across {{company_name}} while researching businesses involved in the import, distribution, or sale of {{product_name}}.
+
+{{pitch_snippet}}
+
+We would like to introduce our company and explore a potential business partnership with your organization. We offer quality products suitable for international buyers, distributors, wholesalers, and retailers.
+
+Buyer Details
+
+• Contact Name: {{buyer_name}}
+• Company Name: {{company_name}}
+• Country: {{country}}
+• Website: {{website}}
+• Source Platform: {{source}}
+
+Product Details
+
+• Product Name: {{product_name}}
+• Product Category: {{category}}
+• Export Availability: {{export_availability}}
+• Customization Options: {{customization_options}}
+• Minimum Order Quantity: {{min_order_quantity}}
+• Shipping Availability: {{shipping_availability}}
+
+Please find our company presentation and product information attached for your review.
+
+We would be pleased to discuss pricing, product specifications, samples, customization, and long-term supply opportunities.
+
+Thank you for your time and consideration. We look forward to hearing from you.
+
+Best Regards,
+
+{{sender_name}}
+{{sender_company}}
+{{sender_email}}
+{{sender_phone}}</textarea>
+                    </div>
+
+                    <h4 class="mt-3 mb-2 text-gold"><i class="fa-solid fa-eye"></i> Compiled Live Preview</h4>
+                    <div class="email-preview-box">
+                        <div class="preview-header">
+                            <strong>Subject:</strong> <span id="preview-subject">Export Partnership Opportunity – Singing Bowls</span>
+                        </div>
+                        <div class="preview-body" id="preview-body-text">
+                            <!-- Compiled text -->
+                        </div>
+                        <div class="preview-attachment">
+                            <i class="fa-solid fa-paperclip"></i> Attachment: <span id="preview-attachment-name">Company_Presentation.pdf</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB CONTENT 5: GMAIL OUTREACH DISPATCHER -->
+        <section class="tab-content" id="tab-outreach">
+            <div class="grid-2col">
+                <!-- Gmail Connection Card -->
+                <div class="card glass-card">
+                    <div class="card-header">
+                        <h3><i class="fa-brands fa-google red-text"></i> Gmail Connection & Authentication</h3>
+                        <span class="badge badge-green" id="gmail-auth-status">OAuth Connected / Sandbox Active</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Outreach Mode</label>
+                        <select id="gmail-mode-select" onchange="toggleGmailModeInputs()">
+                            <option value="simulation" selected>Safe Sandbox / Simulation Mode (Recommended for testing)</option>
+                            <option value="live">Live Gmail SMTP Outreach</option>
+                        </select>
+                    </div>
+
+                    <div id="live-gmail-inputs" style="display: none;">
+                        <div class="form-group">
+                            <label>Gmail Address</label>
+                            <input type="email" id="gmail-user" placeholder="yourname@gmail.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Gmail App Password (16-char code)</label>
+                            <input type="password" id="gmail-pass" placeholder="•••• •••• •••• ••••">
+                        </div>
+                    </div>
+
+                    <button class="btn btn-secondary btn-full" onclick="saveGmailCredentials()">
+                        <i class="fa-solid fa-shield-halved"></i> Save & Test Gmail Connection
+                    </button>
+                </div>
+
+                <!-- Launch Campaign Dispatcher -->
+                <div class="card glass-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-rocket gold-text"></i> Launch Outreach Campaign</h3>
+                    </div>
+
+                    <div class="dispatch-summary">
+                        <div class="summary-item">
+                            <span>Target Audience:</span>
+                            <strong id="summary-audience">All Valid Leads</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>Sending Limit:</span>
+                            <strong id="summary-limit">25 emails</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>Delay Between Emails:</span>
+                            <strong id="summary-delay">5 seconds</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>Attachment:</span>
+                            <strong class="text-green"><i class="fa-solid fa-file-pdf"></i> PDF Presentation Attached</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>Duplicate Prevention:</span>
+                            <strong class="text-purple">Active (Skipping previously contacted)</strong>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning mt-3">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span>Campaign will send personalized emails with attached company presentation. duplicate buyers will be skipped automatically.</span>
+                    </div>
+
+                    <button class="btn btn-primary btn-full btn-lg mt-3" id="btn-start-campaign" onclick="startCampaignExecution()">
+                        <i class="fa-solid fa-paper-plane"></i> START OUTREACH CAMPAIGN NOW
+                    </button>
+                </div>
+            </div>
+
+            <!-- Live Progress Bar Card -->
+            <div class="card glass-card mt-4" id="progress-card" style="display: none;">
+                <div class="card-header space-between">
+                    <h3><i class="fa-solid fa-spinner fa-spin cyan-text"></i> Campaign Execution Live Monitor</h3>
+                    <span id="progress-status-badge" class="badge badge-cyan">In Progress</span>
+                </div>
+
+                <div class="progress-container">
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" id="progress-bar-fill" style="width: 0%;"></div>
+                    </div>
+                    <div class="progress-text space-between mt-2">
+                        <span id="progress-text-count">0 / 0 Processed</span>
+                        <span id="progress-text-percent">0%</span>
+                    </div>
+                </div>
+
+                <div class="grid-3col mt-3 text-center">
+                    <div class="stat-box">
+                        <span class="stat-num text-green" id="live-sent-count">0</span>
+                        <span class="stat-lbl">Sent Successfully</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-num text-red" id="live-failed-count">0</span>
+                        <span class="stat-lbl">Failed</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-num text-purple" id="live-skipped-count">0</span>
+                        <span class="stat-lbl">Skipped Duplicates</span>
+                    </div>
+                </div>
+
+                <div class="log-feed-box mt-3" id="live-log-feed">
+                    <div class="log-line text-muted">Ready to launch campaign...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB CONTENT 6: REPORTS & LOGS -->
+        <section class="tab-content" id="tab-reports">
+            <div class="card glass-card mb-4">
+                <div class="card-header space-between">
+                    <h3><i class="fa-solid fa-chart-line gold-text"></i> Campaign Performance & Contact Records</h3>
+                    <button class="btn btn-outline" onclick="exportBuyersCSV()">
+                        <i class="fa-solid fa-file-csv"></i> Download CSV Summary
+                    </button>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Recipient Email</th>
+                                <th>Company</th>
+                                <th>Recipient Name</th>
+                                <th>Attachment</th>
+                                <th>Status</th>
+                                <th>Error / Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logs-table-tbody">
+                            <tr><td colspan="7" class="text-center text-muted">No campaign logs recorded yet.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- AI Insights Modal -->
+    <div class="modal" id="ai-modal">
+        <div class="modal-content glass-card">
+            <div class="modal-header space-between">
+                <h3><i class="fa-solid fa-brain purple-text"></i> AI Lead Qualification Details</h3>
+                <button class="close-btn" onclick="closeModal('ai-modal')">&times;</button>
+            </div>
+            <div class="modal-body" id="ai-modal-body">
+                <!-- Content loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settings-modal">
+        <div class="modal-content glass-card">
+            <div class="modal-header space-between">
+                <h3><i class="fa-solid fa-gear cyan-text"></i> Platform Settings</h3>
+                <button class="close-btn" onclick="closeModal('settings-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Google Gemini API Key (Optional for LLM Reasoning)</label>
+                    <input type="password" id="modal-gemini-key" placeholder="AIzaSy...">
+                    <small class="text-muted">If empty, system uses built-in heuristic NLP classification engine.</small>
+                </div>
+                <div class="form-group">
+                    <label>Default Product Name</label>
+                    <input type="text" id="modal-default-product" value="Singing Bowls">
+                </div>
+                <button class="btn btn-primary btn-full mt-2" onclick="saveSettingsModal()">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS Application -->
+    <script src="/static/app.js"></script>
+</body>
+</html>
