@@ -4,25 +4,37 @@
 
 ---
 
+## 🎬 System Demo Video
+
+https://github.com/user-attachments/assets/demo-video-placeholder
+
+> **Watch the full application walkthrough demonstrating real-time SerpAPI buyer discovery, website extraction, Gemini AI qualification, and live Gmail OAuth outreach dispatch.**
+
+*(Video file location: [`video/video.mp4`](file:///d:/Nivritha/Projects/Export%20Marketing%20Automation%20System/ExportReach%20AI/video/video.mp4))*
+
+---
+
 ## 📌 Table of Contents
-1. [Executive Summary & Core Value Proposition](#-executive-summary--core-value-proposition)
-2. [Key System Features & Capabilities](#-key-system-features--capabilities)
-3. [End-to-End System Architecture](#-end-to-end-system-architecture)
-4. [Technology Stack](#-technology-stack)
-5. [Project Directory Structure](#-project-directory-structure)
-6. [Prerequisites & Environment Setup](#-prerequisites--environment-setup)
-7. [Step-by-Step Installation & Running Guide](#-step-by-step-installation--running-guide)
-8. [Google Cloud Gmail OAuth 2.0 Setup Guide](#-google-cloud-gmail-oauth-20-setup-guide)
-9. [Detailed User Workflow & Module Breakdown](#-detailed-user-workflow--module-breakdown)
-10. [REST API Documentation & Endpoints](#-rest-api-documentation--endpoints)
-11. [Database Schema & Entity Models](#-database-schema--entity-models)
-12. [Performance Benchmarks & Optimization](#-performance-benchmarks--optimization)
-13. [Troubleshooting & Frequently Asked Questions](#-troubleshooting--frequently-asked-questions)
-14. [License & Acknowledgments](#-license--acknowledgments)
+1. [System Demo Video](#-system-demo-video)
+2. [Executive Summary & Core Value Proposition](#-executive-summary--core-value-proposition)
+3. [Key System Features & Capabilities](#-key-system-features--capabilities)
+4. [End-to-End System Architecture](#-end-to-end-system-architecture)
+5. [Technology Stack](#-technology-stack)
+6. [Project Directory Structure](#-project-directory-structure)
+7. [Prerequisites & Environment Setup](#-prerequisites--environment-setup)
+8. [Step-by-Step Installation & Running Guide](#-step-by-step-installation--running-guide)
+9. [Google Cloud Gmail OAuth 2.0 Setup Guide](#-google-cloud-gmail-oauth-20-setup-guide)
+10. [Detailed User Workflow & Module Breakdown](#-detailed-user-workflow--module-breakdown)
+11. [REST API Documentation & Endpoints](#-rest-api-documentation--endpoints)
+12. [Database Schema & Entity Models](#-database-schema--entity-models)
+13. [Performance Benchmarks & Optimization](#-performance-benchmarks--optimization)
+14. [Troubleshooting & Frequently Asked Questions](#-troubleshooting--frequently-asked-questions)
+15. [License & Acknowledgments](#-license--acknowledgments)
 
 ---
 
 ## 🚀 Executive Summary & Core Value Proposition
+
 
 Traditional B2B export marketing suffers from manual trade directory searches, outdated static database spreadsheets, high email bounce rates, and generic spam campaigns that damage domain reputation.
 
