@@ -6,11 +6,11 @@
 
 ## 🎬 System Demo Video
 
-https://github.com/user-attachments/assets/demo-video-placeholder
+<video src="video/video.mp4" controls width="100%" poster="" autoplay muted loop>
+  Your browser does not support the video tag.
+</video>
 
 > **Watch the full application walkthrough demonstrating real-time SerpAPI buyer discovery, website extraction, Gemini AI qualification, and live Gmail OAuth outreach dispatch.**
-
-*(Video file location: [`video/video.mp4`](file:///d:/Nivritha/Projects/Export%20Marketing%20Automation%20System/ExportReach%20AI/video/video.mp4))*
 
 ---
 
