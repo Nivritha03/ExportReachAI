@@ -520,9 +520,24 @@ def google_oauth_callback(code: str = None, error: str = None):
             res = hclient.post(token_url, data=token_payload)
             if res.status_code == 200:
                 token_data = res.json()
-                SYSTEM_SETTINGS["gmail_access_token"]  = token_data.get("access_token", "")
+                access_token = token_data.get("access_token", "")
+                SYSTEM_SETTINGS["gmail_access_token"]  = access_token
                 SYSTEM_SETTINGS["gmail_refresh_token"] = token_data.get("refresh_token", "")
                 SYSTEM_SETTINGS["gmail_mode"]          = "oauth"
+
+                # Fetch connected Gmail user email address
+                try:
+                    profile_res = hclient.get(
+                        "https://gmail.googleapis.com/gmail/v1/users/me/profile",
+                        headers={"Authorization": f"Bearer {access_token}"}
+                    )
+                    if profile_res.status_code == 200:
+                        user_email = profile_res.json().get("emailAddress", "")
+                        SYSTEM_SETTINGS["gmail_username"] = user_email
+                        print(f"[OAuth] Connected Gmail user: {user_email}")
+                except Exception as ep:
+                    print(f"[OAuth] Could not fetch profile: {ep}")
+
                 print(f"[OAuth] Gmail connected successfully. Mode = oauth")
                 return RedirectResponse(url="http://localhost:3000/dashboard?oauth=success")
             else:
@@ -547,6 +562,41 @@ def gmail_status():
         "smtp_configured": has_username,
         "ready":          has_token or has_username or mode == "simulation",
         "email":          SYSTEM_SETTINGS.get("gmail_username", ""),
+    }
+
+
+@app.post("/api/gmail/signout")
+@app.post("/api/gmail/disconnect")
+@app.get("/api/gmail/signout")
+def gmail_signout():
+    """
+    Disconnects and signs out the currently connected Gmail account.
+    Revokes OAuth token with Google if present, clears credentials, and resets mode to simulation.
+    """
+    token = SYSTEM_SETTINGS.get("gmail_access_token")
+    if token:
+        try:
+            import httpx as _httpx
+            with _httpx.Client(timeout=4.0) as hclient:
+                hclient.post(f"https://oauth2.googleapis.com/revoke?token={token}")
+        except Exception as e_rev:
+            print(f"[OAuth] Token revocation: {e_rev}")
+
+    SYSTEM_SETTINGS["gmail_access_token"] = ""
+    SYSTEM_SETTINGS["gmail_refresh_token"] = ""
+    SYSTEM_SETTINGS["gmail_username"] = ""
+    SYSTEM_SETTINGS["gmail_password"] = ""
+    SYSTEM_SETTINGS["gmail_mode"] = "simulation"
+    print(f"[OAuth] Gmail signed out. Mode reset to simulation.")
+
+    return {
+        "status": "success",
+        "message": "Signed out of Gmail successfully.",
+        "mode": "simulation",
+        "oauth_connected": False,
+        "smtp_configured": False,
+        "ready": True,
+        "email": "",
     }
 
 

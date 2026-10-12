@@ -520,6 +520,24 @@ async function saveGmailCredentials() {
     }
 }
 
+async function signOutGmail() {
+    try {
+        const res = await fetch(`${API_BASE}/gmail/signout`, { method: "POST" });
+        if (res.ok) {
+            const badge = document.getElementById("gmail-status-text");
+            if (badge) badge.innerText = "Gmail: Connected (Sandbox)";
+            const authStatus = document.getElementById("gmail-auth-status");
+            if (authStatus) {
+                authStatus.innerText = "Sandbox Active";
+                authStatus.className = "badge badge-cyan";
+            }
+            alert("Signed out of Gmail successfully. Reverted to simulation sandbox.");
+        }
+    } catch (e) {
+        console.error("Gmail signout error:", e);
+    }
+}
+
 async function startCampaignExecution() {
     // 1. Ensure campaign exists
     if (!state.activeCampaign) {

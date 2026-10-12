@@ -18,6 +18,8 @@ export default function SettingsTab() {
   const [testResult, setTestResult] = useState<{ success: boolean; message: string } | null>(null);
   const [oauthUrl, setOauthUrl] = useState('');
   const [loading, setLoading] = useState(true);
+  const [signingOut, setSigningOut] = useState(false);
+  const [signOutFeedback, setSignOutFeedback] = useState<string | null>(null);
 
   useEffect(() => {
     // Check for oauth=success query param
@@ -26,6 +28,10 @@ export default function SettingsTab() {
       window.history.replaceState({}, '', '/dashboard');
     }
     fetchStatus();
+
+    const handleStatusChange = () => fetchStatus();
+    window.addEventListener('gmail-status-change', handleStatusChange);
+    return () => window.removeEventListener('gmail-status-change', handleStatusChange);
   }, []);
 
   const fetchStatus = async () => {
@@ -49,6 +55,28 @@ export default function SettingsTab() {
   const connectGmail = () => {
     if (oauthUrl) {
       window.open(oauthUrl, '_self');
+    }
+  };
+
+  const signOutGmail = async () => {
+    setSigningOut(true);
+    setSignOutFeedback(null);
+    try {
+      const res = await fetch(`${API}/api/gmail/signout`, {
+        method: 'POST',
+      });
+      if (res.ok) {
+        setSignOutFeedback('✓ Successfully signed out of Gmail. Switched back to simulation sandbox.');
+        await fetchStatus();
+        window.dispatchEvent(new Event('gmail-status-change'));
+      } else {
+        setSignOutFeedback('Failed to sign out. Please try again.');
+      }
+    } catch (err: any) {
+      setSignOutFeedback(`Sign out error: ${err.message}`);
+    } finally {
+      setSigningOut(false);
+      setTimeout(() => setSignOutFeedback(null), 5000);
     }
   };
 
@@ -211,16 +239,54 @@ ExportReach AI Team`,
                 Connect Gmail with OAuth
               </button>
             ) : (
-              <div className="flex gap-3">
-                <div className="flex-1 py-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-sm font-bold flex items-center justify-center gap-2">
-                  ✓ Gmail Connected — Campaigns send from your account
+              <div className="space-y-3">
+                <div className="p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse flex-shrink-0" />
+                    <div>
+                      <div className="text-sm font-bold text-white">
+                        Connected: <span className="text-emerald-400">{gmailStatus?.email || 'Gmail OAuth Account'}</span>
+                      </div>
+                      <div className="text-xs text-slate-400">All outreach campaigns dispatch directly through your verified Gmail address</div>
+                    </div>
+                  </div>
+                  <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                    Active
+                  </span>
                 </div>
-                <button
-                  onClick={connectGmail}
-                  className="px-4 py-3 rounded-xl border border-white/10 text-slate-400 hover:text-white text-sm transition-all"
-                >
-                  Re-auth
-                </button>
+
+                <div className="flex gap-3">
+                  <button
+                    onClick={signOutGmail}
+                    disabled={signingOut}
+                    className="flex-1 py-3 rounded-xl border border-red-500/30 bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 text-sm font-bold transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-red-500/5"
+                  >
+                    {signingOut ? (
+                      <><span className="w-4 h-4 border-2 border-red-400/30 border-t-red-400 rounded-full animate-spin" /> Signing out…</>
+                    ) : (
+                      <>
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                        Sign Out of Gmail
+                      </>
+                    )}
+                  </button>
+                  <button
+                    onClick={connectGmail}
+                    className="px-5 py-3 rounded-xl border border-white/10 hover:border-white/20 text-slate-300 hover:text-white text-sm font-semibold transition-all bg-slate-800/50 hover:bg-slate-800 cursor-pointer"
+                    title="Switch or re-authenticate Google account"
+                  >
+                    Switch Account
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {signOutFeedback && (
+              <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold flex items-center gap-2">
+                <span>✓</span>
+                <span>{signOutFeedback}</span>
               </div>
             )}
           </div>

@@ -18,30 +18,74 @@ const SIDEBAR_ITEMS = [
 function GmailStatusPill({ onSettingsClick }: { onSettingsClick: () => void }) {
   const [mode, setMode] = React.useState<string>('simulation');
   const [connected, setConnected] = React.useState(false);
+  const [email, setEmail] = React.useState<string>('');
+  const [isSigningOut, setIsSigningOut] = React.useState(false);
 
-  useEffect(() => {
+  const fetchGmailStatus = () => {
     fetch('http://127.0.0.1:8000/api/gmail/status')
       .then(r => r.json())
       .then(d => {
         setMode(d.mode || 'simulation');
         setConnected(d.oauth_connected || false);
+        setEmail(d.email || '');
       })
       .catch(() => {});
+  };
+
+  useEffect(() => {
+    fetchGmailStatus();
+    const handleStatusChange = () => fetchGmailStatus();
+    window.addEventListener('gmail-status-change', handleStatusChange);
+    return () => window.removeEventListener('gmail-status-change', handleStatusChange);
   }, []);
+
+  const handleSignOut = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsSigningOut(true);
+    try {
+      await fetch('http://127.0.0.1:8000/api/gmail/signout', { method: 'POST' });
+      fetchGmailStatus();
+      window.dispatchEvent(new Event('gmail-status-change'));
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsSigningOut(false);
+    }
+  };
 
   const isOAuth = mode === 'oauth' && connected;
 
   return (
-    <button
-      onClick={onSettingsClick}
-      className="w-full flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-800/60 border border-white/5 text-xs text-slate-300 hover:border-blue-500/30 transition-colors text-left"
-    >
-      <span className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${isOAuth ? 'bg-emerald-400' : 'bg-amber-400'} animate-pulse`} />
-      <div>
-        <span className="font-bold text-white block">Gmail</span>
-        <span className="text-[11px] text-slate-400">{isOAuth ? 'OAuth Connected' : 'Simulation Mode'}</span>
-      </div>
-    </button>
+    <div className="space-y-1.5">
+      <button
+        onClick={onSettingsClick}
+        className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-slate-800/60 border border-white/5 text-xs text-slate-300 hover:border-blue-500/30 transition-colors text-left cursor-pointer"
+      >
+        <div className="flex items-center gap-2 min-w-0">
+          <span className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${isOAuth ? 'bg-emerald-400' : 'bg-amber-400'} animate-pulse`} />
+          <div className="min-w-0">
+            <span className="font-bold text-white block">Gmail</span>
+            <span className="text-[11px] text-slate-400 truncate block max-w-[140px]">
+              {isOAuth ? (email || 'OAuth Connected') : 'Simulation Mode'}
+            </span>
+          </div>
+        </div>
+      </button>
+
+      {isOAuth && (
+        <button
+          onClick={handleSignOut}
+          disabled={isSigningOut}
+          className="w-full flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-[11px] font-semibold text-red-400 hover:text-red-300 transition-colors cursor-pointer"
+          title="Sign out of connected Gmail account"
+        >
+          <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          </svg>
+          <span>{isSigningOut ? 'Signing out…' : 'Sign Out Gmail'}</span>
+        </button>
+      )}
+    </div>
   );
 }
 
